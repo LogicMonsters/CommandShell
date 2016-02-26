@@ -1,0 +1,56 @@
+**************************************** Baby Command Shell Simulation ****************************************
+					      	      	    	        author : Qing Guo 
+							   	        date: 06/12/2015
+**************************************** Baby Command Shell Simulation ****************************************							   
+
+I have completed All 4 steps with all memory clean.
+
+Whole project has been already uploaded to your server.
+You can run the program directly since they have been already compiled or you can type "make clean" and "make" to clean former executable and temporary files and recompile them.
+You can start my shell by typing "./myShell"
+
+Step 1:
+     ./a : it will print out "Error" and "Hello World". And exits with status 0.
+     ./segmentation : it will cause a segmentation fault. It will print out error message " The program was killed by signal 11".
+     ./noexist : if it doesn't exist in the specific directory. There will be a reminder "./noexist: No such file or directory".
+     exit : exit myShell. 
+     ctrl + d : exit myShell.
+
+Step 2:
+     ./parse : it can print out parsed arguments you have typed.
+     ./parse a\ b c\   : it will print out "./parse", "a b" and "c ".
+     ./parse a\\  : it will print out "./parse" and "a\ ".
+     ls, cat ,pwd, and etc.
+     commandNotExist : it will print out error message "Command commandNotExist not found".
+     noexist : If the command line could not be found in the environment path, the shell will print "Command noexist not found" and wait user to input another command line.
+
+Step 3:
+     about : it will print out basic information.
+     cd : If the directory does not exist, it will print out "No such file or directory". If it is not a directory, it will print out "Not a directory".
+     pushd : you can type "pushd ../" or "pushd /" and you will get into specific directory. if the input path doesn't exist it will print out "No such file or directory". 
+     popd : If the stack is empty, it will print out "path stack is empty!".
+     dirstack : It will print out data stored in path stack.
+     
+Step 4:
+     ./a > test.txt
+     ./a > test1.txt 2>test2.txt : it will redirect the standard output stream into "test1.txt" and the standard error stream into "test2.txt".
+     ./c < res.txt > res2.txt : it will redirect "res.txt" into cat and redirect the result into "res2.txt".
+     cat res.txt>test.txt or ls > test.txt : it will redirect the output into "test.txt".
+     cat < res.txt > res2.txt : it will redirect "res.txt" into cat and redirect the result into "res2.txt".
+     cat >res2.txt<res.txt : the same effect.
+
+     ./b|./c : it is okay.
+    ./b|./c|./c : it is okay.
+    ./c < res.txt|./c : it is okay
+    ./b|./c > test.txt : it is okay
+    ./c < res.txt |./c|./c|./c|./d arg1 arg2 > test.txt: it can also deal with both redirection and receiving arguments.  
+ 
+Bugs:
+
+1.
+	For the pipe with redirection, it couldn't  deal with redirection in the middle of commands( that means except for the first and last command)
+   e.g.	./c < res.txt | ./c | ./c > res2.txt   it will be fcine.(no matter spaces between those commands, it could handle that format issue well).
+   	        ./c | ./c > res2.txt |./c        	    it won't work. it just redirects the final result in the "res2.txt".
+      	        ./c | ./c < res.txt |./c  	       	     it won't work. it just redirects the res.txt into the first command.
+2.
+	./c < res.txt | cat                         it won't work. it will print out "waitpid  Program was killed by signal 13".
